@@ -1,9 +1,12 @@
-import os
+import os 
 import tempfile
 import yt_dlp
+from dotenv import load_dotenv
+
+load_dotenv()
 
 file_path = os.path.join(os.path.dirname(__file__), "vimeo_links.txt")
-output_folder = r"D:\ALFONSO provini"
+output_folder = os.getenv("FOLDER_PATH")
 batch_size = 5
 
 yt_dlp_options = {
@@ -31,6 +34,17 @@ for i in range(0, len(video_lines), batch_size):
 
     for line in batch_lines:
         url, password = line.split("::") if "::" in line else (line, None)
+
+        # Skip the video if it's already downloaded
+        try:
+            video_info = ydl.extract_info(url, download=False)
+            output_file = ydl.prepare_filename(video_info)
+            if os.path.exists(output_file):
+                print(f"Il file '{output_file}' esiste già. Skipping...")
+                continue
+        except Exception as e:
+            print(f"Errore nel controllo del file già scaricato per {url}: {e}")
+            continue
 
         ydl.params['videopassword'] = password
         try:
