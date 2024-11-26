@@ -3,7 +3,25 @@ import time
 import re
 
 # Percorso del file in cui verranno salvati i link
-file_path = r"C:\Users\f.viola\OneDrive\Strumenti\vimeo-downloader\vimeo-downloader-main\vimeo_links.txt"
+file_path = "vimeo_links.txt"
+def is_file_empty(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return len(file.read()) == 0
+    except FileNotFoundError:
+        return True
+
+if is_file_empty(file_path):
+    print(f"Il file '{file_path}' è vuoto.")
+if not is_file_empty(file_path):
+    risposta = input("Il file non è vuoto. Vuoi svuotarlo? (s/n): ")
+    if risposta.lower() == 's':
+        with open(file_path, 'w') as file:
+            file.truncate(0)
+    else:
+        print("Il file non è stato svuotato.")
+
+
 
 # Espressione regolare per rilevare un link di Vimeo
 vimeo_regex = re.compile(r'(https?://vimeo\.com/\S+)')
