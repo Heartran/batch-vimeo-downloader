@@ -19,8 +19,8 @@ yt_dlp_options = {
     "nooverwrites": True,
     "verbose": True,
     "tempdir": tempfile.gettempdir(),
-    "username": "r.filangieri@luckyred.it",
-    "password": "Vimeo&lucky1957",
+    "username": os.getenv("VIMEO_USERNAME"),
+    "password": os.getenv("VIMEO_PASSWORD"),
 }
 
 os.makedirs(output_folder, exist_ok=True)
